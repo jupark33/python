@@ -38,9 +38,9 @@ class Scheduler(object):
 
 if __name__ == '__main__':
     scheduler = Scheduler()
-    # cron 스케줄러를 실행시키며, job_id는 "1", 10
+    # cron 스케줄러를 실행시키며, job_id는 "1", 10  
     scheduler.scheduler('cron', "1")
-    # interval 스케줄러를 실행시키며, job_id 는 "2"
+    # interval 스케줄러를 실행시키며, job_id 는 "2" 2  
     scheduler.scheduler('interval', "2")
     count = 0
     while True:
