@@ -68,5 +68,5 @@ CREATE TABLE mss."T_volumes"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE mss."T_stock_info"
+ALTER TABLE mss."T_volumes"
   OWNER TO user_mss; 
