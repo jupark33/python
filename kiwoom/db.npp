@@ -1,15 +1,15 @@
 1.sql
-CREATE ROLE role_sms_all
+CREATE ROLE role_mss_all
   NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
   
-CREATE ROLE user_sms LOGIN
+CREATE ROLE user_mss LOGIN
   ENCRYPTED PASSWORD 'md56c8a269a8bfeb414e6661dbd1fbf7181'
   NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
-GRANT role_sms_all TO user_sms;
+GRANT role_sms_all TO user_mss;
 
 2.sql
-CREATE DATABASE sms
-  WITH OWNER = user_sms
+CREATE DATABASE mss
+  WITH OWNER = user_mss
        ENCODING = 'UTF8'
        TABLESPACE = pg_default
        LC_COLLATE = 'Korean_Korea.949'
@@ -17,24 +17,24 @@ CREATE DATABASE sms
        CONNECTION LIMIT = -1;
        
 3.sql
-CREATE SCHEMA sms
-  AUTHORIZATION role_sms_all;
+CREATE SCHEMA mss
+  AUTHORIZATION role_mss_all;
   
 4.sql
 -- seq
-CREATE SEQUENCE sms.seq_stock_info
+CREATE SEQUENCE mss.seq_stock_info
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9999999999
   START 1
   CACHE 1;
-ALTER TABLE sms.seq_stock_info
-  OWNER TO user_sms;  
+ALTER TABLE mss.seq_stock_info
+  OWNER TO user_mss;  
   
 -- table 
-CREATE TABLE sms."T_stock_info"
+CREATE TABLE mss."T_stock_info"
 (
-  no bigint NOT NULL DEFAULT nextval('sms.seq_stock_info'::regclass),
+  no bigint NOT NULL DEFAULT nextval('mss.seq_stock_info'::regclass),
   st_code character varying(20) NOT NULL,
   st_name character varying(50) NOT NULL,
   CONSTRAINT "T_stock_info_pkey" PRIMARY KEY (no)
@@ -42,23 +42,23 @@ CREATE TABLE sms."T_stock_info"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE sms."T_stock_info"
-  OWNER TO user_sms; 
+ALTER TABLE mss."T_stock_info"
+  OWNER TO user_mss; 
   
 -- seq
-CREATE SEQUENCE sms.seq_volumes
+CREATE SEQUENCE mss.seq_volumes
   INCREMENT 1
   MINVALUE 1
   MAXVALUE 9999999999
   START 1
   CACHE 1;
-ALTER TABLE sms.seq_volumes
-  OWNER TO user_sms;
+ALTER TABLE mss.seq_volumes
+  OWNER TO user_mss;
   
 -- table
-CREATE TABLE sms."T_volumes"
+CREATE TABLE mss."T_volumes"
 (
-  no bigint NOT NULL DEFAULT nextval('sms.seq_volumes'::regclass),
+  no bigint NOT NULL DEFAULT nextval('mss.seq_volumes'::regclass),
   st_code character varying(20) NOT NULL,
   volume integer NOT NULL,
   dt_date timestamp without time zone,  -- 날짜만
@@ -68,5 +68,5 @@ CREATE TABLE sms."T_volumes"
 WITH (
   OIDS=FALSE
 );
-ALTER TABLE sms."T_stock_info"
-  OWNER TO user_sms; 
+ALTER TABLE mss."T_stock_info"
+  OWNER TO user_mss; 
