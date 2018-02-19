@@ -63,7 +63,7 @@ CREATE TABLE mss."T_volumes"
   volume integer NOT NULL,
   dt_date timestamp without time zone,  -- 날짜만
   dt_time timestamp without time zone,  -- 날짜+시간
-  CONSTRAINT "T_stock_info_pkey" PRIMARY KEY (no)
+  CONSTRAINT "T_volumes_pkey" PRIMARY KEY (no)
 )
 WITH (
   OIDS=FALSE
