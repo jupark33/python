@@ -1,8 +1,7 @@
 import os
 import sys
-import datetime
-import ConfigParser
-from sqlalchemy import Column, ForeignKey, Integer, String
+import configparser
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
@@ -20,17 +19,20 @@ class Volumes(Base):
 	no = Column(Integer, primary_key=True)
 	st_code = Column(String(20), nullable=False)
 	volume = Column(Integer, nullable=False)
-	dt_date = Column(Datetime)
-	dt_time = Column(Datetime)
+	dt_date = Column(DateTime, nullable=True)
+	dt_time = Column(DateTime, nullable=True)
 
-config = ConfigParser.RawConfigParser()
+config = configparser.RawConfigParser()
 config.read('db_conn.properties')
 
 id = config.get('connection', 'id')
 pw = config.get('connection', 'pw')
 
+print("id : " + id)
+print("pw : " + pw)
+
 #engine = create_engine('sqlite:///sqlalchemy_example.db')
-url = 'postgresql://' + id + ":" + pw + '@localhost:5432/mms'
+url = 'postgresql://' + id + ":" + pw + '@localhost:5432/mss'
 engine = create_engine(url)
 
 Base.metadata.create_all(engine)
