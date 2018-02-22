@@ -10,6 +10,7 @@ Base = declarative_base()
 
 class Stock_info(Base):
 	__tablename__ = 'T_stock_info'
+	__table_args__ = {'schema' : 'mss'}
 	no = Column(Integer, primary_key=True)
 	st_code = Column(String(20), nullable=False)
 	st_name = Column(String(50), nullable=False)
