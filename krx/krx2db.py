@@ -6,7 +6,8 @@ from xml.dom import minidom
 from bs4 import BeautifulSoup
 
 from db_engine import Base, Stock_info, Volume, engine
-from StringUtil import strCommaToInt
+from StringUtil import strCommaToInt, change_hour_minute
+from datetime import datetime, timedelta
 
 def get_basic_inf():
     DBSession = sessionmaker(bind=engine)
@@ -55,9 +56,21 @@ class Processor_Volume(object):
         print('st_code : ' + st_code)
         for ds in dailystocks:
             # print(ds['day_date'], ds['day_volume'], ds['day_start'], ds['day_endprice'])
-            new_volume = Volume(st_code=st_code, dt_date=ds['day_date'], volume=strCommaToInt(ds['day_volume']))
-            print(new_volume.st_code + ', ' + new_volume.dt_date + ', ' + str(new_volume.volume))
-            self.session.add(new_volume)
+            str_date = ds['day_date']
+            date = datetime.strptime(str_date, '%y/%m/%d')
+
+            date = change_hour_minute(date, 23, 59)
+            new_volume = Volume(st_code=st_code, dt_date=date, volume=strCommaToInt(ds['day_volume']))
+            # print(new_volume.st_code + ', ' + str(new_volume.dt_date) + ', ' + str(new_volume.volume))
+
+            exist = self.isExistVolumeDate(new_volume.dt_date)
+            if exist == True:
+                print(str(new_volume.dt_date) + '은 이미 존재함')
+            else:
+                print(str(new_volume.dt_date) + '은 신규임')
+                self.session.add(new_volume)
+
+            # self.session.add(new_volume)
         self.session.commit()
 
 
@@ -73,8 +86,22 @@ class Processor_Volume(object):
             # 18/02/09 316,883 2,730 2,790
             # 18/02/08 470,086 2,725 2,790
 
+    # Volume 테이블 조회
+    def query_volume(self):
+        for instance in self.session.query(Volume):
+            print(instance.st_code + ', ' + str(instance.dt_date) + ', ' + str(instance.volume))
+
+    # 이미 존재하는 날짜+시간 인지 체크 (True : 이미 존재, False : 존재 하지 않음)
+    def isExistVolumeDate(self, target_dt):
+        result = False
+        for instance in self.session.query(Volume):
+            if instance.dt_date == target_dt:
+                result = True
+                break
+        return result
 if __name__ == '__main__':
     # get_basic_inf()
     # get_volume_n_price('004770')
     p_volume = Processor_Volume()
     p_volume.krx_2_db('004770')
+    # p_volume.query_volume()
