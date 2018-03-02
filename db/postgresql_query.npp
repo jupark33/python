@@ -1,0 +1,2 @@
+- password change
+alter user postgres with password '1234'
