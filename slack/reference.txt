@@ -1,0 +1,5 @@
+# app stop
+[대상app 로컬repository]$ heroku ps:scale clock=0
+
+# app start
+[대상app 로컬repository]$ heroku ps:scale clock=1
