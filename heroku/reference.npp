@@ -6,3 +6,7 @@ https://medium.com/@lynzt/scheduling-jobs-using-custom-clock-on-heroku-python-46
 
 # app start
 [대상app 로컬repository]$ heroku ps:scale clock=1
+
+#
+$ heroku ps -a [app_name]
+
