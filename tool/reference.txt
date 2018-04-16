@@ -1,0 +1,2 @@
+# 맥북 Ananconda 설치후 pycharm에서 프로젝트생성시 heroku remote를 git pull 하면
+  python2.7로 생성되어서 되어서 python3.6을 설치하고 heroku remote를 git pull 하고나서 설정에서 python3.6으로 변경함
