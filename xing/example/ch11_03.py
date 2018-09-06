@@ -29,3 +29,9 @@ instXASession.Login(id, passwd, cert_passwd, 0, 0)
 
 while XASessionEventHandler.login_state == 0:
     pythoncom.PumpWaitingMessages()
+
+# 계좌 정보 조회
+num_account = instXASession.GetAccountListCount()
+for i in range(num_account):
+    account = instXASession.GetAccountList(i)
+    print(account)
