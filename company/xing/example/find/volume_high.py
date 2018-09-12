@@ -23,6 +23,10 @@ class Stock:
     def setName(self, hname):
         self.hname = hname
 
+    # 종목코드
+    def setShcode(self, shcode):
+        self.shcode = shcode
+
     # 현재가
     def setPrice(self, price):
         self.price = price
@@ -31,13 +35,17 @@ class Stock:
     def setChane(self, change):
         self.change = change
 
-    # 누적거래량
+    # 당일누적거래량
     def setVolume(self, volume):
         self.volume = volume
 
     # 전일대비
     def setChange(self, change):
         self.change = change
+
+    # 전일거래량
+    def setJnivolume(self, jnivolume):
+        self.jnivolume = jnivolume
 
 instXASession = win32com.client.DispatchWithEvents("XA_Session.XASession", XASessionEventHandler)
 
@@ -57,6 +65,9 @@ for i in range(num_account):
     print(account)
 
 #----------
+# T1452
+# shcode : 단축코드
+#----------
 instXAQueryT1452 = win32com.client.DispatchWithEvents("XA_DataSet.XAQuery", XAQueryEventHandlerT1452)
 instXAQueryT1452.ResFileName = "C:\\eBest\\xingAPI\\Res\\t1452.res"
 
@@ -74,24 +85,32 @@ print('전체 갯수 : ' + str(count))  # 2018.09.10 : 1489
 stock_list = list()
 
 for i in range(count):
-    hname = instXAQueryT1452.GetFieldData("t1452OutBlock1", "hname", i)
-    price = instXAQueryT1452.GetFieldData("t1452OutBlock1", "price", i)
-    volume = instXAQueryT1452.GetFieldData("t1452OutBlock1", "volume", i)
-    change = instXAQueryT1452.GetFieldData("t1452OutBlock1", "change", i)
+    hname = instXAQueryT1452.GetFieldData("t1452OutBlock1", "hname", i)         #종목명
+    shcode = instXAQueryT1452.GetFieldData("t1452OutBlock1", "shcode", i)       #종목코드
+    price = instXAQueryT1452.GetFieldData("t1452OutBlock1", "price", i)         #현재가
+    volume = instXAQueryT1452.GetFieldData("t1452OutBlock1", "volume", i)       #당일누적거래량
+    change = instXAQueryT1452.GetFieldData("t1452OutBlock1", "change", i)       #전일대비
+    jnivolume = instXAQueryT1452.GetFieldData("t1452OutBlock1", "jnivolume", i) #전일거래량
+
     i_price = int(price)
+
     aStock = Stock()
     aStock.setName(hname)
+    aStock.setShcode(shcode)
     # print('name : ' + hname)
     aStock.setPrice(i_price)
     aStock.setVolume(volume)
     aStock.setChange(change)
+    aStock.setJnivolume(jnivolume)
+
     stock_list.append(aStock)
     # print('name of astock : ' + aStock.getName())
-    aStock = None
+    # aStock = None
 
 # item_list.sort()
 # print('len item : ' + str(len(stock_list)))
 
 stock_list.sort(key=operator.attrgetter('volume'))
 for stock in stock_list:
-    print(stock.hname + ", " + str(stock.price) + ", " + str(stock.change) + ", " + str(stock.volume))
+    # print(stock.hname + ", [종목코드]" + stock.shcode + ", [가격]" + str(stock.price) + ", [전일거래량]" + str(stock.jnivolume) + ", [전일대비]" + str(stock.change) + ", [누적거래량]" + str(stock.volume))
+    print("[종목명]" + stock.hname + ", [종목코드]" + stock.shcode + ", [가격]" + str(stock.price) + ", [당일누적거래량]" + str(stock.volume))
