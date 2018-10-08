@@ -1,0 +1,6 @@
+# 가장 최근 날짜 얻기
+def get_last(self, c_int_v):
+  tr_kb = T_TR_KB(n_currency_pair=c_int_v)
+  result = self.session.query(func.max(T_TR_KB.timestamp)).filter_by(n_currency_pair = c_int_v).all
+  # => <class 'list'>: [(datetime.datetime(2018, 10, 8, 12, 19, 55, 81477),)]
+  
