@@ -11,3 +11,12 @@ select
 max(timestamp)
 from tb
 where type = 1
+
+- latest date
+SELECT
+max(timestamp), price
+FROM mcs.t_tr_kb
+where n_currency_pair = 0
+group by price
+
+
