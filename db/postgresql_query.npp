@@ -5,3 +5,9 @@ alter user postgres with password '1234'
 select max(dt_reg)
 from tb
 where type = 1
+
+- latest date
+select
+max(timestamp)
+from tb
+where type = 1
