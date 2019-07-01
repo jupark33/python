@@ -32,7 +32,7 @@ class Scheduler(object):
     def task(self, type, job_id):
         print("%s task id[%s] : %d" %(type, job_id, time.localtime().tm_sec))
 
-    # 스케줄러생성
+    # 스케줄러생성, 월-금, 0시~23시, 2초 간격
     def scheduler(self, job_id):
         print("%s Scheduler Start" % type)
         self.sched.add_job(self.task, type, day_of_week='mon-fri', hour='0-23', second='*/2', id=job_id, args=(type, job_id))
